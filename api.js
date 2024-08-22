@@ -1,8 +1,6 @@
 const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
-const _ = require('lodash')
-const moment = require('moment-timezone')
 
 const app = express()
 const PORT = 3000
@@ -15,10 +13,10 @@ app.use(express.urlencoded({ extended: true }))
 
 // 自定義日誌中間件
 app.use((req, res, next) => {
-  console.log(`Received request for ${req.method} ${req.url}`)
+  console.log(`Received request for ${req.method} ${req.url}`, '\n')
 
   // 記錄請求主體
-  console.log('Request Body:', req.body)
+  console.log('Request Body:', req.body, '\n')
 
   // 攔截和記錄響應
   const oldSend = res.send
@@ -32,7 +30,7 @@ app.use((req, res, next) => {
 
 // 登入
 app.post('/dev-api/user/login', require('./api/router/user/login'))
-app.post('/dev-api/user/info', require('./api/router/user/info'))
+app.get('/dev-api/user/info', require('./api/router/user/info'))
 app.post('/dev-api/user/logout', require('./api/router/user/logout'))
 
 // 故事

@@ -9,7 +9,7 @@
           學號: {{ username }}
         </el-header>
         <el-row>
-          <el-col :sm="12" :md="14" :xl="16">
+          <el-col :sm="24" :md="14" :xl="16">
             <div class="grid-content bg-purple-dark">
               <el-row>
                 <el-col :span="24">
@@ -31,12 +31,12 @@
               </el-row>
             </div>
           </el-col>
-          <el-col :sm="12" :md="10" :xl="8">
+          <el-col :sm="24" :md="10" :xl="8">
             <div class="my-chat bg-purple-dark">
               <el-card class="box-card">
                 <div ref="chatBox" class="container">
                   <div v-for="(item, index) in historyItems" :key="index" class="history-item" :class="`${item.role === 'user'? 'user': 'model'}-role`">
-                    <div class="name">{{ item.role === 'user'? '你': '小夥伴' }}</div>
+                    <div class="name">{{ item.role === 'user'? '你': '小灰' }}</div>
                     <blockquote>{{ item.content | replacedText }}</blockquote>
                   </div>
                 </div>
@@ -387,7 +387,6 @@ blockquote {
     overflow: auto;
     padding-bottom: 100px;
   }
-
 }
 
 </style>
