@@ -30,14 +30,6 @@ app.use((req, res, next) => {
   next()
 })
 
-// DB 使用
-const { User, Story, Chatbot, Message, Trigger } = require('./api/models')
-
-// user 使用
-const users = require('./api/data/users.js')
-
-const API_KEY = require('./apiKey.js').API_KEY
-
 // 登入
 app.post('/dev-api/user/login', require('./api/router/user/login'))
 app.post('/dev-api/user/info', require('./api/router/user/info'))
