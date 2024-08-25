@@ -14,7 +14,7 @@
         </div>
         <div class="bullshit__headline">{{ message }}</div>
         <div class="bullshit__info">請檢查您輸入的網址是否正確，或點選下面的按鈕返回首頁。</div>
-        <a href="" class="bullshit__return-home">回首頁</a>
+        <a href="/" class="bullshit__return-home">回首頁</a>
       </div>
     </div>
   </div>
