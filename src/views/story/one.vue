@@ -90,7 +90,8 @@ export default {
       myStory: null,
       myStoryTitle: null,
       wordObj: {},
-      selectWords: ''
+      selectWords: '',
+      promptPart: ''
     }
   },
   computed: {
@@ -124,6 +125,7 @@ export default {
         loadingInstance.close()
         this.itemObj = result.data
         this.myStoryTitle = result.data.title
+        this.promptPart = result.data.prompt_part
         this.myStory = this.textFormat(result.data.content, result.data.words || [])
 
         this.initData = {
@@ -141,7 +143,8 @@ export default {
         const result = await initGpt2({
           message: initData,
           username: this.username,
-          storyId: this.$route.params.id
+          storyId: this.$route.params.id,
+          promptPart: this.promptPart
         })
         loadingInstance.close()
         this.story = result.data

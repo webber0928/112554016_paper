@@ -21,7 +21,10 @@
                 <el-input v-model="form.title" />
               </el-form-item>
               <el-form-item label="文章內容">
-                <el-input v-model="form.content" rows="16" type="textarea" />
+                <el-input v-model="form.content" rows="10" type="textarea" />
+              </el-form-item>
+              <el-form-item label="文章問題">
+                <el-input v-model="form.prompt_part" rows="5" type="textarea" />
               </el-form-item>
               <el-form-item label="單字卡">
                 <el-tag
@@ -65,6 +68,7 @@ export default {
       form: {
         title: '',
         content: '',
+        prompt_part: '',
         ranking: '',
         words: []
       },
@@ -85,14 +89,9 @@ export default {
         // this.itemObj = result.data
         this.form.title = result.data.title
         this.form.content = result.data.content
+        this.form.prompt_part = result.data.prompt_part
         this.form.ranking = result.data.ranking
         this.form.words = result.data.words || []
-
-        this.initData = {
-          role: 'assistant',
-          content: result.data.content
-        }
-        this.initGptData2(this.initData)
       } catch (error) {
         this.$message(error)
       }

@@ -2,7 +2,7 @@
 const { Story } = require('../../models')
 
 module.exports = async(req, res) => {
-  const { title, content, words = [] } = req.body
+  const { title, content, words = [], prompt_part } = req.body
   try {
     if (!title || !content) throw Error('資料有問題')
     const item = await Story.findAll({
@@ -15,6 +15,7 @@ module.exports = async(req, res) => {
     await Story.create({
       title,
       content,
+      prompt_part,
       words: formatWords,
       ranking: item.length + 1
     })

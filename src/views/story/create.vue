@@ -7,6 +7,9 @@
       <el-form-item label="文章內容">
         <el-input v-model="form.content" rows="6" type="textarea" />
       </el-form-item>
+      <el-form-item label="文章問題">
+        <el-input v-model="form.prompt_part" rows="5" type="textarea" />
+      </el-form-item>
       <el-form-item label="單字卡">
         <el-tag
           v-for="tag in form.words"

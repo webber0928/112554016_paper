@@ -6,24 +6,23 @@ const { Chatbot, User, Message } = require('../../models')
 
 module.exports = async(req, res) => {
   try {
-    const { message, username, storyId } = req.body
+    const { message, username, storyId, promptPart } = req.body
     const chatbot = await Chatbot.findOne({
       where: {
         type: 'questionPrompt',
         deleted_at: null
       }
     })
+
+    const content = chatbot.prompt.replace('$QUESTION', promptPart + '\n 故事如下:\n ' + message.content)
     const data = {
-      // model: 'text-embedding-3-small',
       model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',
-          content: chatbot.prompt
-        },
-        message
+          content
+        }
       ]
-      // max_tokens: 50
     }
     const config = {
       method: 'post',
@@ -50,17 +49,19 @@ module.exports = async(req, res) => {
       message: JSON.stringify(data.messages[0]),
       execute_date: moment().tz('Asia/Taipei').format('YYYYMMDD')
     }
+
     await Message.create(firstData)
 
-    const secondData = {
-      user: user.id,
-      story_id: storyId,
-      isBot: 1,
-      type: 'story',
-      message: JSON.stringify(data.messages[1]),
-      execute_date: moment().tz('Asia/Taipei').format('YYYYMMDD')
-    }
-    await Message.create(secondData)
+    // const secondData = {
+    //   user: user.id,
+    //   story_id: storyId,
+    //   isBot: 1,
+    //   type: 'story',
+    //   message: JSON.stringify(data.messages[1]),
+    //   execute_date: moment().tz('Asia/Taipei').format('YYYYMMDD')
+    // }
+    // console.log('L54', secondData)
+    // await Message.create(secondData)
 
     const thirdData = {
       user: user.id,

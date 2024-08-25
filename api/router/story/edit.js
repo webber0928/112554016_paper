@@ -2,7 +2,7 @@
 const { Story } = require('../../models')
 
 module.exports = async(req, res) => {
-  const { title, content, ranking, words = [] } = req.body
+  const { title, content, ranking, words = [], prompt_part } = req.body
   try {
     const item = await Story.findOne({
       where: {
@@ -21,6 +21,9 @@ module.exports = async(req, res) => {
     }
     if (words && item.words !== words) {
       item.set('words', formatWords)
+    }
+    if (prompt_part && item.prompt_part !== prompt_part) {
+      item.set('prompt_part', prompt_part)
     }
 
     if (ranking) item.set('ranking', ranking)
