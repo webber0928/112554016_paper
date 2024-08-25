@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: false
     },
+    prompt_part: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
     words: {
       type: DataTypes.TEXT,
       allowNull: true,
