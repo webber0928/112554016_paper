@@ -7,13 +7,14 @@
             <el-button type="text" plain @click="$router.push('/story')">返回</el-button>
           </div>
           學號: {{ username }}
+          <p>建議鍵盤高度: {{ keyboardHeight }}px</p>
         </el-header>
         <el-row>
-          <el-col :sm="24" :md="14" :xl="16">
+          <el-col :md="14" :xl="16">
             <div class="grid-content bg-purple-dark">
               <el-row>
                 <el-col :span="24">
-                  <div class="bg-purple-dark my-story">
+                  <div class="bg-purple-dark my-story" style="padding-right: 0px;">
                     <el-card class="box-card">
                       <div slot="header" class="clearfix">
                         <span>故事標題: <b>{{ myStoryTitle }}</b></span>
@@ -31,7 +32,7 @@
               </el-row>
             </div>
           </el-col>
-          <el-col :sm="24" :md="10" :xl="8">
+          <el-col :md="10" :xl="8">
             <div class="my-chat bg-purple-dark">
               <el-card class="box-card">
                 <div ref="chatBox" class="container">
@@ -91,7 +92,9 @@ export default {
       myStoryTitle: null,
       wordObj: {},
       selectWords: '',
-      promptPart: ''
+      promptPart: '',
+      windowHeight: window.innerHeight,
+      keyboardHeight: 0
     }
   },
   computed: {
@@ -109,11 +112,25 @@ export default {
         this.handleClick(event.target.textContent)
       }
     })
+
+    window.addEventListener('resize', this.handleResize)
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize)
   },
   created() {
     this.initGptData(this.$route.params.id)
   },
   methods: {
+    handleResize() {
+      const currentHeight = window.innerHeight
+      if (currentHeight < this.windowHeight) {
+        this.keyboardHeight = this.windowHeight - currentHeight
+      } else {
+        this.keyboardHeight = 0
+      }
+      this.windowHeight = currentHeight
+    },
     scrollToBottom() {
       const chatBox = this.$refs.chatBox
       setTimeout(() => { chatBox.scrollTop = chatBox.scrollHeight }, 150)
@@ -132,7 +149,7 @@ export default {
           role: 'assistant',
           content: result.data.content
         }
-        this.initGptData2(this.initData)
+        // this.initGptData2(this.initData)
       } catch (error) {
         this.$message(error)
       }
