@@ -10,7 +10,7 @@
           <p>建議鍵盤高度: {{ keyboardHeight }}px</p>
         </el-header>
         <el-row>
-          <el-col :md="14" :xl="16">
+          <el-col :xs="24" :sm="14" :md="14" :xl="16">
             <div class="grid-content bg-purple-dark">
               <el-row>
                 <el-col :span="24">
@@ -32,7 +32,7 @@
               </el-row>
             </div>
           </el-col>
-          <el-col :md="10" :xl="8">
+          <el-col :xs="24" :sm="10" :md="10" :xl="8">
             <div class="my-chat bg-purple-dark">
               <el-card class="box-card">
                 <div ref="chatBox" class="container">
@@ -374,7 +374,7 @@ blockquote {
 .my-chat {
   // border-radius: 4px;
   min-height: 36px;
-  height: calc(100vh - 60px);
+  height: calc(100dvh - 60px);
   padding: 20px;
 }
 .row-bg {
@@ -382,7 +382,7 @@ blockquote {
   background-color: #f9fafc;
 }
 .my-story {
-  height: calc(100vh - 60px);
+  height: calc(100dvh - 60px);
   padding: 20px 20px 20px 20px;
 }
 .my-scaffolding {
