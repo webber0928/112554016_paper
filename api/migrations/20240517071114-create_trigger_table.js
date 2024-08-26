@@ -10,7 +10,7 @@ module.exports = {
         autoIncrement: true
       },
       user_no: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: false
       },
       story_id: {
