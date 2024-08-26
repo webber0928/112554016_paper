@@ -149,7 +149,7 @@ export default {
           role: 'assistant',
           content: result.data.content
         }
-        // this.initGptData2(this.initData)
+        this.initGptData2(this.initData)
       } catch (error) {
         this.$message(error)
       }
