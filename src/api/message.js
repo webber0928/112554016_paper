@@ -1,13 +1,5 @@
 import request from '@/utils/request'
 
-export function login(data) {
-  return request({
-    url: '/user/login',
-    method: 'post',
-    data
-  })
-}
-
 export function getInfo() {
   return request({
     url: '/dashboard/message/user/list',
@@ -22,9 +14,16 @@ export function getUser(id) {
   })
 }
 
-export function logout() {
+export function getUserGroup() {
   return request({
-    url: '/user/logout',
-    method: 'post'
+    url: '/dashboard/message/userGroup/list',
+    method: 'get'
+  })
+}
+
+export function getUserGroupOne(groupName) {
+  return request({
+    url: '/dashboard/message/userGroup/' + groupName,
+    method: 'get'
   })
 }

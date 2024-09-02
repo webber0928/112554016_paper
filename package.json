@@ -16,8 +16,10 @@
   },
   "dependencies": {
     "axios": "0.18.1",
+    "bluebird": "^3.7.2",
     "core-js": "3.6.5",
     "cors": "^2.8.5",
+    "echarts": "^5.5.1",
     "element-ui": "2.15.7",
     "express": "^4.19.2",
     "js-cookie": "2.2.0",

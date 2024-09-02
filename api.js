@@ -16,12 +16,12 @@ app.use((req, res, next) => {
   console.log(`Received request for ${req.method} ${req.url}`, '\n')
 
   // 記錄請求主體
-  console.log('Request Body:', req.body, '\n')
+  // console.log('Request Body:', req.body, '\n')
 
   // 攔截和記錄響應
   const oldSend = res.send
   res.send = function(data) {
-    console.log('Response Body:', data)
+    // console.log('Response Body:', data)
     oldSend.apply(res, arguments)
   }
 
@@ -51,6 +51,11 @@ app.get('/dev-api/prompt', require('./api/router/prompt/one'))
 // 聊天內容
 app.get('/dev-api/dashboard/message/user/list', require('./api/router/message/userList'))
 app.get('/dev-api/dashboard/message/user/:userId', require('./api/router/message/userOne'))
+
+// 群組資訊
+app.get('/dev-api/dashboard/message/userGroup/list', require('./api/router/message/userGroupList'))
+app.get('/dev-api/dashboard/message/userGroup/:groupName', require('./api/router/message/userGroupOne'))
+
 app.put('/dev-api/trigger/:type/:word', require('./api/router/trigger/update'))
 
 app.get('/', (req, res) => {
