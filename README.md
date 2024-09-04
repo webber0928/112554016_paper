@@ -30,6 +30,11 @@ long_query_time = 2
 max_binlog_size   = 100M
 ```
 
+### PM2
+```
+pm2 start npm --name "my-app" -- run api --log-date-format "YYYY-MM-DD HH:mm:ss"
+```
+
 #### vim /etc/nginx/sites-available/default
 
 ```
