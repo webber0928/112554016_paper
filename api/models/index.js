@@ -11,10 +11,21 @@ const config = require(__dirname + '/../config/config.json')[env]
 const db = {}
 
 let sequelize
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config)
-} else {
-  sequelize = new Sequelize(config.database, config.username, config.password, config)
+try {
+  if (config.use_env_variable) {
+    sequelize = new Sequelize(process.env[config.use_env_variable], config)
+  } else {
+    sequelize = new Sequelize(config.database, config.username, config.password, config)
+  }
+
+  // 嘗試連接到資料庫
+  sequelize.authenticate().then(() => {
+    console.log('資料庫連線成功。')
+  }).catch(err => {
+    console.error('無法連接到資料庫:', err)
+  })
+} catch (err) {
+  console.error('Sequelize 初始化錯誤:', err)
 }
 
 fs
