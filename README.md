@@ -35,6 +35,27 @@ max_binlog_size   = 100M
 pm2 start npm --name "my-app" -- run api --log-date-format "YYYY-MM-DD HH:mm:ss"
 ```
 
+### 多個 domain 
+
+```
+# sudo vim /etc/nginx/sites-available/wb-app.com
+server {
+    listen 80;
+    server_name wb-app.com;
+
+    root /var/www;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}
+
+
+
+
+```
+
 #### vim /etc/nginx/sites-available/default
 
 ```
