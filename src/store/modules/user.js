@@ -1,5 +1,5 @@
 import { login, logout, getInfo } from '@/api/user'
-import { getToken, setToken, removeToken, setUsername, getUsername, removeUsername } from '@/utils/auth'
+import { getToken, setToken, removeToken, setUsername, setTime, getUsername, removeUsername } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
@@ -7,9 +7,12 @@ const getDefaultState = () => {
     token: getToken(),
     name: '',
     avatar: '',
-    username: getUsername()
+    username: getUsername(),
+    loginTime: null
   }
 }
+
+const expiration = 60 * 60 * 24 * 1000
 
 const state = getDefaultState()
 
@@ -28,6 +31,9 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
+  },
+  SET_TIME: (state, avatar) => {
+    state.time = avatar
   }
 }
 
@@ -42,6 +48,9 @@ const actions = {
         setToken(data.token)
         commit('SET_USERNAME', data.username)
         setUsername(data.username)
+        const time = Date.now()
+        commit('SET_TIME', time)
+        setTime(time)
         resolve()
       }).catch(error => {
         reject(error)
@@ -55,6 +64,9 @@ const actions = {
       getInfo(state.token).then(response => {
         const { data } = response
 
+        if (!state.time || (Date.now - state.time) > expiration) {
+          return reject('登入時間已過，請重新登入。')
+        }
         if (!data) {
           return reject('Verification failed, please Login again.')
         }

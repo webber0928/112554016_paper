@@ -2,6 +2,7 @@ import Cookies from 'js-cookie'
 
 const TokenKey = 'vue_admin_template_token'
 const UsernameKey = 'username'
+const Time = 'time'
 
 export function getToken() {
   return Cookies.get(TokenKey)
@@ -25,4 +26,11 @@ export function setUsername(username) {
 
 export function removeUsername() {
   return Cookies.remove(UsernameKey)
+}
+
+export function setTime(time) {
+  return Cookies.set(Time, time)
+}
+export function getTime() {
+  return Cookies.get(Time)
 }
