@@ -1,5 +1,5 @@
 import { login, logout, getInfo } from '@/api/user'
-import { getToken, setToken, removeToken, setUsername, setTime, getUsername, removeUsername } from '@/utils/auth'
+import { getToken, setToken, removeToken, setUsername, setTime, getTime, getUsername, removeUsername } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
@@ -8,7 +8,7 @@ const getDefaultState = () => {
     name: '',
     avatar: '',
     username: getUsername(),
-    loginTime: null
+    time: getTime()
   }
 }
 
@@ -64,7 +64,9 @@ const actions = {
       getInfo(state.token).then(response => {
         const { data } = response
 
-        if (!state.time || (Date.now - state.time) > expiration) {
+        const now = Date.now()
+        console.log('L68', state, now, state.time, now - state.time)
+        if (!state.time || (now - state.time) > expiration) {
           return reject('登入時間已過，請重新登入。')
         }
         if (!data) {
