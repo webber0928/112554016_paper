@@ -61,7 +61,7 @@ export default {
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
+        callback(new Error('請輸入正確的班級座號'))
       } else {
         callback()
       }

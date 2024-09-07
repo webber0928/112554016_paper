@@ -44,9 +44,9 @@ export const constantRoutes = [
     redirect: '/story',
     children: [{
       path: 'story',
-      name: '學習單',
+      name: '學習單列表',
       component: () => import('@/views/story/index'),
-      meta: { title: '學習單', icon: 'form' }
+      meta: { title: '學習單列表', icon: 'form' }
     }]
   },
 

@@ -6,7 +6,7 @@
       <el-button v-if="token==='admin-token'" type="text" class="button" @click="go(nulll, 'created')">建立新的故事</el-button>
     </div>
     <el-row :gutter="20">
-      <el-col v-for="item in items" :key="item.id" :span="8" :sm="12" :md="12" style="margin-top: 15px;">
+      <el-col v-for="item in items" :key="item.id" :sm="12" :md="12" style="margin-top: 15px;">
         <div class="grid-content bg-purple">
           <el-card :body-style="{ padding: '0px' }">
             <div style="padding: 14px;">

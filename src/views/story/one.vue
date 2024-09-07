@@ -1,60 +1,72 @@
 <template>
-  <div class="chatroom-container">
-    <div class="chatroom-text">
+  <div class="chatroom-text">
+    <el-container>
+      <el-header>
+        <div>
+          <el-button type="text" plain @click="$router.push('/story')">&lt; 返回</el-button>
+          <div>[ 學號: {{ username }} ]</div>
+        </div>
+      </el-header>
       <el-container>
-        <el-header>
-          <div>
-            <el-button type="text" plain @click="$router.push('/story')">返回</el-button>
-          </div>
-          學號: {{ username }}
-          <p>建議鍵盤高度: {{ keyboardHeight }}px</p>
-        </el-header>
-        <el-row>
-          <el-col :xs="24" :sm="14" :md="14" :xl="16">
-            <div class="grid-content bg-purple-dark">
-              <el-row>
-                <el-col :span="24">
-                  <div class="bg-purple-dark my-story" style="padding-right: 0px;">
-                    <el-card class="box-card">
-                      <div slot="header" class="clearfix">
-                        <span>故事標題: <b>{{ myStoryTitle }}</b></span>
-                      </div>
-                      <div ref="myStory">
-                        <div v-if="myStory" class="text item" v-html="myStory" />
-                        <div v-else class="text item">
-                          <el-skeleton :rows="6" />
-                        </div>
-                        <audio id="tts-audio" ref="audio" controls style="display: none" src="https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=apple" />
-                      </div>
-                    </el-card>
-                  </div>
-                </el-col>
-              </el-row>
-            </div>
-          </el-col>
-          <el-col :xs="24" :sm="10" :md="10" :xl="8">
-            <div class="my-chat bg-purple-dark">
-              <el-card class="box-card">
-                <div ref="chatBox" class="container">
-                  <div v-for="(item, index) in historyItems" :key="index" class="history-item" :class="`${item.role === 'user'? 'user': 'model'}-role`">
-                    <div class="name">{{ item.role === 'user'? '你': '小灰' }}</div>
-                    <blockquote>{{ item.content | replacedText }}</blockquote>
-                  </div>
-                </div>
-                <div class="form-container">
-                  <div id="form">
-                    <div class="el-input">
-                      <input v-model="form.prompt" class="el-input__inner" type="text" @keyup.enter="onSubmit">
+        <!-- <el-aside width="200px">Aside</el-aside> -->
+        <el-main>
+          <el-row>
+            <el-col :xs="24" :sm="24" :md="24" :xl="24">
+              <div class="my-story grid-content bg-purple">
+                <div class="my-chat bg-purple-dark">
+                  <el-card class="box-card" style="background-color: #fdf6ec">
+                    <div slot="header" class="clearfix">
+                      <span>故事標題: <b>{{ myStoryTitle }}</b></span>
                     </div>
-                    <el-button type="primary" @click="onSubmit">送出</el-button>
-                  </div>
+                    <div ref="myStory">
+                      <div v-if="myStory" class="text item" v-html="myStory" />
+                      <div v-else class="text item">
+                        <el-skeleton :rows="6" />
+                      </div>
+                      <audio id="tts-audio" ref="audio" controls style="display: none" src="https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=apple" />
+                    </div>
+                  </el-card>
                 </div>
-              </el-card>
-            </div>
-          </el-col>
-        </el-row>
+              </div>
+            </el-col>
+            <el-col :xs="24" :sm="24" :md="24" :xl="24">
+              <div class="my-room grid-content bg-purple-light">
+                <div class="my-chat bg-purple-dark">
+                  <el-card class="box-card">
+                    <div ref="chatBox" class="chat-message-list">
+                      <div v-for="(item, index) in historyItems" :key="index" class="chat-message" :class="`${item.role === 'user'? 'user': 'model'}-role`">
+                        <div class="message-avatar">
+                          <img v-if="item.role !== 'user'" src="https://webzz-production.s3-ap-northeast-1.amazonaws.com/users/avatars/F42B1Z9EV4WEFLY7GGYY.png">
+                          <img v-else src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80">
+                        </div>
+                        <div class="message-content">{{ item.content | replacedText }}</div>
+                        <!-- <div class="message-time">00:03:41</div> -->
+                      </div>
+                    </div>
+                    <div class="form-container">
+                      <hr>
+                      <div class="chat-bottom">
+                        <div class="bottom-row">
+                          <div class="leave">
+                            <el-button type="danger" plain @click="exitChat">離開對話</el-button>
+                          </div>
+                          <div class="send-input">
+                            <input v-model="form.prompt" class="el-input__inner" type="text" placeholder="輸入對話" @keyup.enter="onSubmit">
+                          </div>
+                          <div class="send-btn">
+                            <el-button type="primary" plain @click="onSubmit">送出</el-button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </el-card>
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </el-main>
       </el-container>
-    </div>
+    </el-container>
   </div>
 </template>
 
@@ -68,7 +80,8 @@ export default {
   name: 'Chatroom',
   filters: {
     replacedText(value) {
-      return value.replace(/\((.*?)\)/g, '')
+      console.log(value)
+      return value.replace(/\((.*?)\)/g, '').replace(/\s+/g, ' ').trim()
     }
   },
   data() {
@@ -94,7 +107,8 @@ export default {
       selectWords: '',
       promptPart: '',
       windowHeight: window.innerHeight,
-      keyboardHeight: 0
+      keyboardHeight: 0,
+      isComposing: false
     }
   },
   computed: {
@@ -184,7 +198,7 @@ export default {
         const value = word.split(' ')[1]
         this.wordObj[key] = value
         const newRegex = new RegExp(' ' + key, 'g')
-        text = text.replace(newRegex, `<button @click="handleClick">${key}</button>`)
+        text = text.replace(newRegex, ` <button class='el-button el-button--text' @click="handleClick"><span>${key}</span></button>`)
       })
       text = text.replace(/\n/g, '<br>')
       return text
@@ -219,7 +233,6 @@ export default {
       } catch (error) {
         this.$message(error)
       }
-      // this.$message('submit!')
     },
     onCancel() {
       this.$message({
@@ -261,6 +274,9 @@ export default {
         user_no: this.username,
         story_id: this.$route.params.id
       })
+    },
+    exitChat() {
+
     }
   }
 }
@@ -268,145 +284,241 @@ export default {
 
 <style lang="scss" scoped>
 
-.el-card {
-  min-width: 100%;
-  height: 100%;
-  margin: auto;
-  position: relative;
-
-  .el-card__body {
-    height: 100%;
-  }
-}
-
-.container {
-  // padding-bottom: 80px;
-  overflow: auto;
-  height: 100%;
-}
-
-.form-container {
-  background: #fff;
-  margin-top: 15px;
-  border-top: 2px solid rgb(127, 127, 127, 0.5);
-}
-
-#form,
-.history-item {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  padding: 16px 0;
-}
-.form-container {
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-  margin: auto;
-  left: 0px;
-  padding: 5px 15px;
-}
-
-// #file {
-//   flex-grow: 0;
-// }
-
-// #prompt {
-//   margin: 4px;
-//   padding: 2px;
-//   width: 100%;
-// }
-
-button {
-  margin: 0 14px;
-  // width: 90px;
-}
-
-.name {
-  flex-shrink: 0;
-  font-size: 80%;
-  margin: 16px 16px 16px 0;
-  opacity: 0.5;
-  text-align: right;
-  width: 50px;
-}
-
-blockquote {
-  margin: 0;
-}
-
-.history-item {
-  padding: 0 8px 0 0;
-}
-
-.history-item.model-role {
-  background: rgba(127, 127, 127, 0.1);
-}
-
-.history-item > blockquote {
-  flex-grow: 1;
-  margin: 0;
-}
-blockquote {
-  white-space: break-spaces;
-}
-
-.el-row {
-  margin-bottom: 20px;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.el-col {
-  border-radius: 4px;
-}
-.bg-purple-dark {
-  background: #99a9bf;
-  min-height: 36px;
-  height: 50%;
-}
-.bg-purple {
-  background: #d3dce6;
-}
-.bg-purple-light {
-  background: #e5e9f2;
-}
-.my-chat {
-  // border-radius: 4px;
-  min-height: 36px;
-  height: calc(100dvh - 60px);
-  padding: 20px;
-}
-.row-bg {
-  padding: 10px 0;
-  background-color: #f9fafc;
-}
-.my-story {
-  height: calc(100dvh - 60px);
-  padding: 20px 20px 20px 20px;
-}
-.my-scaffolding {
-  height: calc(50vh - 130px);
-  padding: 0 20px 20px 20px;
-}
-
-.text.item {
-  height: 100%;
-  padding-bottom: 50px;
-  overflow: auto;
-  text-align: justify;
-  // white-space: break-spaces;
-}
 .chatroom-text ::v-deep {
   -webkit-user-select:none;
   -moz-user-select:none;
   -o-user-select:none;
   user-select:none;
-  .el-card .el-card__body {
-    height: 100%;
-    overflow: auto;
-    padding-bottom: 100px;
+  .my-story {
+    line-height: 180%;
+  }
+  .my-room {
+    .chat-message {
+      position: relative;
+      margin: 7px 0px;
+      padding-left: 48px;
+      width: 100%;
+
+      &.user-role {
+        text-align: right;
+        padding-left: 0;
+        padding-right: 48px;
+        .message-content {
+          border: 1px solid #ecf5ff;
+          background-color: #ecf5ff;
+        }
+        .message-avatar {
+          right: 0;
+        }
+      }
+      .message-avatar {
+        position: absolute;
+        top: 0px;
+        border: 1px solid transparent;
+        left: 0;
+
+        img {
+          width: 42px;
+          height: 42px;
+          background-size: cover;
+          border-radius: 60px;
+          box-shadow: 0 1px 2px 1px rgba(220, 220, 220, 1);
+        }
+      }
+      .message-content {
+        border: 1px solid #e8f3f7;
+        background-color: #e8f3f7;
+        padding: 5px 9px;
+        min-width: 20px;
+        max-width: 90%;
+        margin-top: 5px;
+        text-align: left;
+        white-space: break-spaces;
+        display: inline-block;
+        border-radius: 15px;
+      }
+    }
+    .chat-bottom {
+      display: table;
+      width: 100%;
+      height: 100%;
+      border: none;
+      padding: 0;
+      .bottom-row {
+        display: table-row;
+        width: 100%;
+        height: 100%;
+        .leave, .send-btn {
+          display: table-cell;
+          height: 100%;
+          max-width: 40px;
+          padding: 0 3px 0 0;
+          &.send-btn {
+            padding: 0 0 0 3px;
+          }
+          button {
+            width: 100%;
+          }
+        }
+        .send-input {
+          display: table-cell;
+          height: 100%;
+        }
+      }
+    }
   }
 }
+
+// .el-card {
+//   min-width: 100%;
+//   height: 100%;
+//   margin: auto;
+//   position: relative;
+
+//   .el-card__body {
+//     height: 100%;
+//   }
+// }
+
+// .container {
+//   // padding-bottom: 80px;
+//   overflow: auto;
+//   height: 100%;
+// }
+
+// .form-container {
+//   background: #fff;
+//   margin-top: 15px;
+//   border-top: 2px solid rgb(127, 127, 127, 0.5);
+// }
+
+// #form,
+// .history-item {
+//   align-items: center;
+//   display: flex;
+//   justify-content: center;
+//   padding: 16px 0;
+// }
+// .form-container {
+//   width: 100%;
+//   position: absolute;
+//   bottom: 0;
+//   margin: auto;
+//   left: 0px;
+//   padding: 5px 15px;
+// }
+
+// // #file {
+// //   flex-grow: 0;
+// // }
+
+// // #prompt {
+// //   margin: 4px;
+// //   padding: 2px;
+// //   width: 100%;
+// // }
+
+// button {
+//   margin: 0 14px;
+//   // width: 90px;
+// }
+
+// .name {
+//   flex-shrink: 0;
+//   font-size: 80%;
+//   margin: 16px 16px 16px 0;
+//   opacity: 0.5;
+//   text-align: right;
+//   width: 50px;
+// }
+
+// blockquote {
+//   margin: 0;
+// }
+
+// .history-item {
+//   padding: 0 8px 0 0;
+// }
+
+// .history-item.model-role {
+//   background: rgba(127, 127, 127, 0.1);
+// }
+
+// .history-item > blockquote {
+//   flex-grow: 1;
+//   margin: 0;
+// }
+// blockquote {
+//   white-space: break-spaces;
+// }
+
+// .el-row {
+//   margin-bottom: 20px;
+//   &:last-child {
+//     margin-bottom: 0;
+//   }
+// }
+// .el-col {
+//   border-radius: 4px;
+// }
+// .bg-purple-dark {
+//   background: #99a9bf;
+//   min-height: 36px;
+//   height: 50%;
+// }
+// .bg-purple {
+//   background: #d3dce6;
+// }
+// .bg-purple-light {
+//   background: #e5e9f2;
+// }
+// .my-chat {
+//   // border-radius: 4px;
+//   min-height: 36px;
+//   // height: calc(100dvh - 60px);
+//   padding: 20px;
+// }
+// .row-bg {
+//   padding: 10px 0;
+//   background-color: #f9fafc;
+// }
+// .my-story {
+//   height: calc(100dvh - 60px);
+//   padding: 20px 20px 20px 20px;
+// }
+// .my-scaffolding {
+//   height: calc(50vh - 130px);
+//   padding: 0 20px 20px 20px;
+// }
+
+// .text.item {
+//   height: 100%;
+//   // padding-bottom: 50px;
+//   overflow: auto;
+//   text-align: justify;
+//   // white-space: break-spaces;
+// }
+// .chatroom-text ::v-deep {
+//   -webkit-user-select:none;
+//   -moz-user-select:none;
+//   -o-user-select:none;
+//   user-select:none;
+//   .el-card .el-card__body {
+//     height: 300px;
+//     overflow: auto;
+//     // padding-bottom: 100px;
+//   }
+// }
+
+// .bg-purple {
+//     background: #d3dce6;
+//   }
+//   .bg-purple-light {
+//     background: #e5e9f2;
+//   }
+//   .grid-content {
+//     border-radius: 4px;
+//     min-height: 36px;
+//   }
 
 </style>
