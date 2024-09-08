@@ -49,7 +49,7 @@
                       <div class="chat-bottom">
                         <div class="bottom-row">
                           <div class="leave">
-                            <el-button type="danger" plain @click="exitChat">離開對話</el-button>
+                            <el-button type="danger" plain @click="exitChat">離開</el-button>
                           </div>
                           <div class="send-input">
                             <input v-model="form.prompt" class="el-input__inner" type="text" placeholder="輸入對話" @keyup.enter="onSubmit">
@@ -377,7 +377,7 @@ export default {
         .leave, .send-btn {
           display: table-cell;
           height: 100%;
-          max-width: 65px;
+          max-width: 60px;
           padding: 0 3px 0 0;
           &.send-btn {
             padding: 0 0 0 3px;
