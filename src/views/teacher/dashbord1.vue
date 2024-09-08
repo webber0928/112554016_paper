@@ -1,14 +1,22 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">學號: {{ username }}</div>
+    <div class="dashboard-text">
+      <el-form ref="form" :model="form" label-width="80px">
+        <el-form-item label="日期">
+          <el-select v-model="form.region">
+            <el-option :label="today" :value="today" />
+          </el-select>
+        </el-form-item>
+      </el-form>
+    </div>
     <el-row :gutter="20">
-      <!-- <Chart1 /> -->
-      <Chart1
-        v-for="item in items"
-        :key="item.id"
-        :item="item"
-        :class-name="item.group"
-      />
+      <el-col v-for="item in items" :key="item.id" :span="12">
+        {{ item.group[0] }}年{{ item.group[1] }}班
+        <Chart1
+          :item="item"
+          :class-name="item.group"
+        />
+      </el-col>
     </el-row>
   </div>
 </template>
@@ -19,6 +27,7 @@ import Chart1 from '@/components/Chart1.vue'
 import { mapGetters } from 'vuex'
 import { Loading } from 'element-ui'
 import { getUserGroup, getInfo } from '@/api/message'
+const now = new Date()
 
 export default {
   name: 'Dashboard',
@@ -28,7 +37,11 @@ export default {
   data() {
     return {
       items: [],
-      listLoading: false
+      listLoading: false,
+      today: `${now.getFullYear()}/${now.getMonth() + 1}/${now.getDate()}`,
+      form: {
+        region: `${now.getFullYear()}/${now.getMonth() + 1}/${now.getDate()}`
+      }
     }
   },
   computed: {

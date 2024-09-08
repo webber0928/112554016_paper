@@ -5,6 +5,9 @@ module.exports = async(req, res) => {
   try {
     const Sequelize = require('sequelize')
     const result = await User.findAll({
+      where: {
+        group: ['62', '64']
+      },
       attributes: [
         'group',
         [Sequelize.fn('COUNT', Sequelize.col('group')), 'total_users']

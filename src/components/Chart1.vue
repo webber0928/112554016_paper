@@ -21,16 +21,16 @@ export default {
   props: {
     className: {
       type: String,
-      default: 'chart',
+      default: 'chart'
     },
     width: {
       type: String,
-      default: '100%',
+      default: '100%'
     },
     height: {
       type: String,
-      default: '500px',
-    },
+      default: '220px'
+    }
   },
   data() {
     return {
@@ -176,18 +176,24 @@ export default {
       this.chart.setOption(option)
 
       // 開始數據更新循環
-      // this.startDataUpdate()
+      this.startDataUpdate()
     },
-    run() {
+    async run() {
       if (!this.chart) return
       // 更新數據
-      for (let i = 0; i < this.data.length; ++i) {
-        if (Math.random() > 0.9) {
-          this.data[i] += Math.round(Math.random() * 2000)
-        } else {
-          this.data[i] += Math.round(Math.random() * 200)
-        }
-      }
+      // for (let i = 0; i < this.data.length; ++i) {
+      //   if (Math.random() > 0.9) {
+      //     this.data[i] += Math.round(Math.random() * 2000)
+      //   } else {
+      //     this.data[i] += Math.round(Math.random() * 200)
+      //   }
+      // }
+      const result = await getUserGroupOne(this.className)
+      this.data = []
+      result.data.forEach((item) => {
+        this.labelList.push(item.user_no.slice(-2))
+        this.data.push(item.total)
+      })
 
       console.log(this.data)
       // 更新圖表數據
@@ -205,7 +211,7 @@ export default {
       this.run()
       // 設置定時器以每隔3秒更新數據
       setInterval(this.run, animationDuration)
-    },
-  },
+    }
+  }
 }
 </script>

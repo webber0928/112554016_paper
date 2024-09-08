@@ -6,6 +6,7 @@ module.exports = async(req, res) => {
   try {
     const groupName = req.params.groupName
     const UserList = []
+    const now = new Date()
 
     const userData = await User.findAll({
       where: {
@@ -26,7 +27,9 @@ module.exports = async(req, res) => {
     await Promise.each(UserList, async(item, idx) => {
       const message = await Message.findAll({
         where: {
-          user: item.id
+          type: 'user',
+          user: item.id,
+          execute_date: `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}`
         },
         order: [['createdAt', 'DESC']]
       })
