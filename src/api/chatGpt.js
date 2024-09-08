@@ -9,13 +9,13 @@ export function sendMessage(params) {
   })
 }
 
-export function initGpt() {
-  return request({
-    url: '/gpt-init',
-    method: 'post'
-  })
-}
-export function initGpt2(params) {
+// export function initGpt() {
+//   return request({
+//     url: '/gpt-init',
+//     method: 'post'
+//   })
+// }
+export function initGpt(params) {
   return request({
     url: '/gpt-init2',
     method: 'post',

@@ -12,21 +12,19 @@
         <el-main>
           <el-row>
             <el-col :xs="24" :sm="24" :md="24" :xl="24">
-              <div class="my-story grid-content bg-purple">
-                <div class="my-chat bg-purple-dark">
-                  <el-card class="box-card" style="background-color: #fdf6ec">
-                    <div slot="header" class="clearfix">
-                      <span>故事標題: <b>{{ myStoryTitle }}</b></span>
+              <div class="my-story bg-purple-dark">
+                <el-card style="background-color: #fdf6ec">
+                  <div slot="header">
+                    <span>故事標題: <b>{{ myStoryTitle }}</b></span>
+                  </div>
+                  <div ref="myStory">
+                    <div v-if="myStory" class="text item" v-html="myStory" />
+                    <div v-else class="text item">
+                      <el-skeleton :rows="6" />
                     </div>
-                    <div ref="myStory">
-                      <div v-if="myStory" class="text item" v-html="myStory" />
-                      <div v-else class="text item">
-                        <el-skeleton :rows="6" />
-                      </div>
-                      <audio id="tts-audio" ref="audio" controls style="display: none" src="https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=apple" />
-                    </div>
-                  </el-card>
-                </div>
+                    <audio id="tts-audio" ref="audio" controls style="display: none" src="https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=apple" />
+                  </div>
+                </el-card>
               </div>
             </el-col>
             <el-col :xs="24" :sm="24" :md="24" :xl="24">
@@ -72,7 +70,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { initGpt2, sendMessage } from '@/api/chatGpt'
+import { initGpt, sendMessage } from '@/api/chatGpt'
 import { getOne, triggerPlay, triggerOpen } from '@/api/story'
 import { Loading } from 'element-ui'
 
@@ -171,7 +169,7 @@ export default {
     async initGptData2(initData) {
       try {
         const loadingInstance = Loading.service({ fullscreen: true })
-        const result = await initGpt2({
+        const result = await initGpt({
           message: initData,
           username: this.username,
           storyId: this.$route.params.id,
@@ -291,6 +289,13 @@ export default {
   user-select:none;
   .my-story {
     line-height: 180%;
+    .el-card__header {
+      line-height: 100%;
+    }
+    .el-card__body {
+      max-height: 300px;
+      overflow: auto;
+    }
   }
   .my-room {
     .chat-message {
@@ -351,7 +356,7 @@ export default {
         .leave, .send-btn {
           display: table-cell;
           height: 100%;
-          max-width: 40px;
+          max-width: 65px;
           padding: 0 3px 0 0;
           &.send-btn {
             padding: 0 0 0 3px;
