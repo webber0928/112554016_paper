@@ -24,9 +24,6 @@
                     </div>
                     <audio id="tts-audio" ref="audio" controls style="display: none" src="https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=apple" />
                   </div>
-                  <div class="scroll-hint">
-                    <p>Swipe to scroll</p>
-                  </div>
                 </el-card>
               </div>
             </el-col>
@@ -49,7 +46,7 @@
                       <div class="chat-bottom">
                         <div class="bottom-row">
                           <div class="leave">
-                            <el-button type="danger" plain @click="exitChat">離開</el-button>
+                            <el-button type="danger" plain @click="exitChat">結束對話</el-button>
                           </div>
                           <div class="send-input">
                             <input v-model="form.prompt" class="el-input__inner" type="text" placeholder="輸入對話" @keyup.enter="onSubmit">
@@ -75,6 +72,7 @@
 import { mapGetters } from 'vuex'
 import { initGpt, sendMessage } from '@/api/chatGpt'
 import { getOne, triggerPlay, triggerOpen } from '@/api/story'
+import { getMessageList, setMessageList, leaveMessage } from '@/api/message'
 import { Loading } from 'element-ui'
 
 export default {
@@ -109,7 +107,8 @@ export default {
       promptPart: '',
       windowHeight: window.innerHeight,
       keyboardHeight: 0,
-      isComposing: false
+      isComposing: false,
+      conversation_id: ''
     }
   },
   computed: {
@@ -154,6 +153,10 @@ export default {
       try {
         const loadingInstance = Loading.service({ fullscreen: true })
         const result = await getOne(id)
+        const messageList = await getMessageList({
+          user_no: this.username,
+          story_id: id
+        })
         loadingInstance.close()
         this.itemObj = result.data
         this.myStoryTitle = result.data.title
@@ -164,7 +167,19 @@ export default {
           role: 'assistant',
           content: result.data.content
         }
-        this.initGptData2(this.initData)
+        if (messageList && messageList.data && messageList.data.length) {
+          this.historyItems = messageList.data.reduce((result, item) => {
+            if (item.type === 'system') return result
+            result.push(item.message)
+            return result
+          }, [])
+
+          this.conversation_id = messageList.data[0].conversation_id
+        } else {
+          const res = await setMessageList({ user_no: this.username, story_id: id })
+          this.conversation_id = res.data.id
+          this.initGptData2(this.initData)
+        }
       } catch (error) {
         this.$message(error)
       }
@@ -176,7 +191,8 @@ export default {
           message: initData,
           username: this.username,
           storyId: this.$route.params.id,
-          promptPart: this.promptPart
+          promptPart: this.promptPart,
+          conversationId: this.conversation_id
         })
         loadingInstance.close()
         this.story = result.data
@@ -222,7 +238,8 @@ export default {
         const result = await sendMessage({
           messages: historyItems,
           username: this.username,
-          storyId: this.$route.params.id
+          storyId: this.$route.params.id,
+          conversation_id: this.conversation_id
         })
         const content = result.data.choices[0].message.content
 
@@ -276,8 +293,13 @@ export default {
         story_id: this.$route.params.id
       })
     },
-    exitChat() {
-
+    async exitChat() {
+      await leaveMessage({
+        user_no: this.username,
+        story_id: this.$route.params.id,
+        id: this.conversation_id
+      })
+      this.$router.push('/story')
     }
   }
 }

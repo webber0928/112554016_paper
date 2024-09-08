@@ -27,3 +27,27 @@ export function getUserGroupOne(groupName) {
     method: 'get'
   })
 }
+
+export function getMessageList(params) {
+  return request({
+    url: '/gpt-history',
+    method: 'get',
+    params
+  })
+}
+
+export function setMessageList(params) {
+  return request({
+    url: '/gpt-history',
+    method: 'post',
+    data: params
+  })
+}
+
+export function leaveMessage(params) {
+  return request({
+    url: '/gpt-endMessage',
+    method: 'post',
+    data: params
+  })
+}
