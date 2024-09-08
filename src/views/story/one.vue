@@ -12,17 +12,20 @@
         <el-main>
           <el-row>
             <el-col :xs="24" :sm="24" :md="24" :xl="24">
-              <div class="my-story bg-purple-dark">
+              <div class="my-story">
                 <el-card style="background-color: #fdf6ec">
                   <div slot="header">
                     <span>故事標題: <b>{{ myStoryTitle }}</b></span>
                   </div>
-                  <div ref="myStory">
+                  <div ref="myStory" class="story-content">
                     <div v-if="myStory" class="text item" v-html="myStory" />
                     <div v-else class="text item">
                       <el-skeleton :rows="6" />
                     </div>
                     <audio id="tts-audio" ref="audio" controls style="display: none" src="https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=apple" />
+                  </div>
+                  <div class="scroll-hint">
+                    <p>Swipe to scroll</p>
                   </div>
                 </el-card>
               </div>
@@ -294,7 +297,20 @@ export default {
     }
     .el-card__body {
       max-height: 300px;
-      overflow: auto;
+      overflow-y: scroll;
+      -webkit-overflow-scrolling: touch;
+      overflow-y: scroll;
+    }
+    ::-webkit-scrollbar {
+      width: 8px; /* 滾動條寬度 */
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.5); /* 滾動條顏色 */
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background-color: rgba(0, 0, 0, 0.1); /* 滾動條背景 */
     }
   }
   .my-room {
