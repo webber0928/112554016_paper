@@ -215,7 +215,7 @@ export default {
         const value = word.split(' ')[1]
         this.wordObj[key] = value
         const newRegex = new RegExp(' ' + key, 'g')
-        text = text.replace(newRegex, ` <button class='el-button el-button--text' @click="handleClick"><span>${key}</span></button>`)
+        text = text.replace(newRegex, ` <button class='el-button el-button--text' @click="handleClick">${key}</button>`)
       })
       text = text.replace(/\n/g, '<br>')
       return text
