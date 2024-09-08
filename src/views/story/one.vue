@@ -211,11 +211,11 @@ export default {
     textFormat(text, words) {
       words = words.sort((a, b) => a.length - b.length)
       words.forEach(word => {
-        const key = word.split(' ')[0]
-        const value = word.split(' ')[1]
-        this.wordObj[key] = value
-        const newRegex = new RegExp(' ' + key, 'g')
-        text = text.replace(newRegex, ` <button class='el-button el-button--text' @click="handleClick">${key}</button>`)
+        const englishWords = word.match(/[a-zA-Z]+/g).join(' ') // 匹配英文字母
+        const chineseWords = word.match(/[\u4e00-\u9fa5]+/g).join() // 匹配中文字
+        this.wordObj[englishWords] = chineseWords
+        const newRegex = new RegExp(' ' + englishWords, 'g')
+        text = text.replace(newRegex, ` <button class='el-button el-button--text' @click="handleClick">${englishWords}</button>`)
       })
       text = text.replace(/\n/g, '<br>')
       return text
