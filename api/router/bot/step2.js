@@ -6,7 +6,7 @@ const { Chatbot, User, Message } = require('../../models')
 
 module.exports = async(req, res) => {
   try {
-    const { message, username, storyId, promptPart } = req.body
+    const { message, username, storyId, promptPart, conversationId } = req.body
     const chatbot = await Chatbot.findOne({
       where: {
         type: 'questionPrompt',
@@ -44,6 +44,7 @@ module.exports = async(req, res) => {
     const firstData = {
       user: user.id,
       story_id: storyId,
+      conversation_id: conversationId,
       isBot: 1,
       type: data.messages[0].role,
       message: JSON.stringify(data.messages[0]),
@@ -66,6 +67,7 @@ module.exports = async(req, res) => {
     const thirdData = {
       user: user.id,
       story_id: storyId,
+      conversation_id: conversationId,
       isBot: 1,
       type: response.data.choices[0].message.role,
       message: JSON.stringify({

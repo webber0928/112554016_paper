@@ -43,6 +43,9 @@ app.put('/dev-api/story/:id', require('./api/router/story/edit'))
 app.post('/dev-api/gpt-init', require('./api/router/bot/step1'))
 app.post('/dev-api/gpt-init2', require('./api/router/bot/step2'))
 app.post('/dev-api/gpt-message', require('./api/router/bot/sendMessage'))
+app.get('/dev-api/gpt-history', require('./api/router/bot/getMessageList'))
+app.post('/dev-api/gpt-history', require('./api/router/bot/addMessageList'))
+app.post('/dev-api/gpt-endMessage', require('./api/router/bot/endMessage'))
 
 // 提示工程
 app.put('/dev-api/prompt/edit', require('./api/router/prompt/edit'))

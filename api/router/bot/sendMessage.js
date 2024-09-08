@@ -6,7 +6,8 @@ const { Chatbot, User, Message } = require('../../models')
 
 module.exports = async(req, res) => {
   try {
-    const { messages, username, storyId } = req.body
+    const { messages, username, storyId, conversation_id } = req.body
+    console.log('L10', messages, username, storyId)
     const chatbot = await Chatbot.findOne({
       where: {
         type: 'questionPrompt',
@@ -21,7 +22,6 @@ module.exports = async(req, res) => {
         'Content-Type': 'application/json'
       },
       data: {
-        // model: 'text-embedding-3-small',
         model: 'gpt-4o-mini',
         messages: [
           {
@@ -29,7 +29,6 @@ module.exports = async(req, res) => {
             content: chatbot.prompt
           }
         ]
-        // max_tokens: 20
       }
     }
     messages.map((item) => {
@@ -49,6 +48,7 @@ module.exports = async(req, res) => {
     const firstData = {
       user: user.id,
       story_id: storyId,
+      conversation_id,
       isBot: 0,
       type: 'user',
       message: JSON.stringify(messages.pop()),
@@ -59,6 +59,7 @@ module.exports = async(req, res) => {
     const secondData = {
       user: user.id,
       story_id: storyId,
+      conversation_id,
       isBot: 1,
       type: response.data.choices[0].message.role,
       message: JSON.stringify({
