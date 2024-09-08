@@ -300,17 +300,17 @@ export default {
       overflow-y: scroll;
       -webkit-overflow-scrolling: touch;
       overflow-y: scroll;
-    }
-    ::-webkit-scrollbar {
-      width: 8px; /* 滾動條寬度 */
-    }
-    ::-webkit-scrollbar-thumb {
-      background-color: rgba(0, 0, 0, 0.5); /* 滾動條顏色 */
-      border-radius: 4px;
-    }
+      &::-webkit-scrollbar {
+        width: 8px; /* 滾動條寬度 */
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.5); /* 滾動條顏色 */
+        border-radius: 4px;
+      }
 
-    ::-webkit-scrollbar-track {
-      background-color: rgba(0, 0, 0, 0.1); /* 滾動條背景 */
+      &::-webkit-scrollbar-track {
+        background-color: rgba(0, 0, 0, 0.1); /* 滾動條背景 */
+      }
     }
   }
   .my-room {
