@@ -16,6 +16,7 @@ module.exports = async(req, res) => {
 
     const content = chatbot.prompt.replace('$QUESTION', promptPart + '\n 故事如下:\n ' + message.content)
     const data = {
+      // model: 'gpt-4o',
       model: 'gpt-4o-mini',
       messages: [
         {

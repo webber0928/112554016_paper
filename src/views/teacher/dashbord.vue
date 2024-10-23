@@ -5,28 +5,28 @@
       <el-col
         v-for="item in items"
         :key="item.id"
-        :span="4"
+        :span="3"
         style="margin-top: 15px"
       >
         <div class="grid-content bg-purple">
           <el-card :body-style="{ padding: '0px' }">
-            <div style="padding: 14px">
+            <div style="padding: 14px" @click="go(item.id)">
               <p>
                 <b>{{ item.user_no }}</b>
               </p>
-              <p>
+              <!-- <p>
                 群組:
                 <b>{{ item.group == "teacher" ? item.group : `${item.user_no[0]}${item.user_no[1]}` }}</b>
-              </p>
+              </p> -->
               <p>
                 次數: <b>{{ item.count }}</b>
               </p>
-              <div
+              <!-- <div
                 class="bottom clearfix"
                 style="text-align: center;margin-top: 10px"
               >
                 <el-button type="text" class="button" @click="go(item.id)">進入</el-button>
-              </div>
+              </div> -->
             </div>
           </el-card>
         </div>
@@ -60,7 +60,11 @@ export default {
         const loadingInstance = Loading.service({ fullscreen: true })
         const result = await getInfo()
         loadingInstance.close()
-        this.items = result.data
+        this.items = result.data.filter(item => {
+          if (item.user_no.indexOf('62') > -1 || item.user_no.indexOf('64') > -1) {
+            return true
+          }
+        })
       } catch (error) {
         this.$message(error)
       }

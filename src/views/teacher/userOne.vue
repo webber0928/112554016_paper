@@ -1,7 +1,58 @@
 <template>
   <div class="dashboard-container">
     <el-row :gutter="20">
-      <el-col
+      <!-- {{ obj }} -->
+      <div
+        v-for="(items, key) in obj"
+        :key="key"
+        style="margin-left: 20px;"
+      >
+        <hr>
+        <p style="text-align: center;font-weight: bold;">{{ key }}</p>
+        <el-table
+          :data="items"
+          height="450"
+          border
+          style="width: 90%;margin: auto;"
+        >
+          <el-table-column label="角色" width="60">
+            <template slot-scope="scope">
+              {{ scope.row.message.role === 'user'? '學生': 'BOT' }}
+            </template>
+          </el-table-column>
+          <el-table-column label="時間" width="90">
+            <template slot-scope="scope">
+              {{ scope.row.dateTime }}
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="message.content"
+            label="對話"
+          />
+        </el-table>
+      </div>
+      <!-- <el-table
+        :data="obj"
+        height="250"
+        border
+        style="width: 100%"
+      >
+        <el-table-column
+          prop="date"
+          label="日期"
+          width="180"
+        />
+        <el-table-column
+          prop="name"
+          label="姓名"
+          width="180"
+        />
+        <el-table-column
+          prop="address"
+          label="地址"
+        />
+      </el-table> -->
+      <!-- <el-col
         v-for="(items, key) in obj"
         :key="key"
         :span="12"
@@ -12,9 +63,9 @@
             <div style="padding: 14px">
               <div ref="chatBox" class="container">
                 <div v-for="(item, index) in items" :key="index" class="history-item">
-                  <!-- <div v-if="index == 1" :class="`${!item.isBot? 'user': 'model'}-role`">
+                  <div v-if="index == 1" :class="`${!item.isBot? 'user': 'model'}-role`">
                     <blockquote style="background: #00ff2b3b;padding: 10px 20px;">{{ item.message.content | replacedText }}</blockquote>
-                  </div> -->
+                  </div>
                   <div v-if="item.message.role == 'user'" :class="`${!item.isBot? 'user': 'model'}-role`">
                     <div class="name">{{ !item.isBot? '你': '小灰' }} <i>{{ `${item.dateTime}` }}</i></div>
                     <blockquote>{{ item.message.content | replacedText }}</blockquote>
@@ -29,7 +80,7 @@
             </div>
           </el-card>
         </div>
-      </el-col>
+      </el-col> -->
     </el-row>
   </div>
 </template>
@@ -50,6 +101,7 @@ export default {
   data() {
     return {
       obj: {},
+      activeNames: '',
       listLoading: false
     }
   },
@@ -67,7 +119,7 @@ export default {
         loadingInstance.close()
         result.data.forEach(item => {
           if (!this.obj[item.dateDay]) this.$set(this.obj, item.dateDay, [])
-          this.obj[item.dateDay].push(item)
+          if (item.message.role !== 'system') this.obj[item.dateDay].push(item)
         })
         // this.items = result.data
       } catch (error) {

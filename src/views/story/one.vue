@@ -16,6 +16,7 @@
                 <el-card style="background-color: #fdf6ec">
                   <div slot="header">
                     <span>故事標題: <b>{{ myStoryTitle }}</b></span>
+                    <!-- <span style="float: right;cursor: pointer;color: #67C23A"><b><span @click="openRecords">看看今天的紀錄</span></b></span> -->
                   </div>
                   <div ref="myStory" class="story-content">
                     <div v-if="myStory" class="text item" v-html="myStory" />
@@ -65,6 +66,38 @@
         </el-main>
       </el-container>
     </el-container>
+    <el-dialog
+      title="今日紀錄"
+      :visible.sync="dialogVisible"
+      width="80%"
+      :before-close="handleClose"
+      max-height="550"
+    >
+      <el-table
+        :data="messageList"
+        style="width: 100%"
+        height="250"
+      >
+        <el-table-column label="對象" width="150">
+          <template slot-scope="scope">
+            {{ scope.row.message.role === 'user'? '學生': 'BOT' }}
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="dateTime"
+          label="時間"
+          width="120"
+        />
+        <el-table-column
+          prop="message.content"
+          label="回應"
+        />
+      </el-table>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -72,7 +105,7 @@
 import { mapGetters } from 'vuex'
 import { initGpt, sendMessage } from '@/api/chatGpt'
 import { getOne, triggerPlay, triggerOpen } from '@/api/story'
-import { getMessageList, setMessageList, leaveMessage } from '@/api/message'
+import { getMessageList, setMessageList, leaveMessage, getInfo, getUser } from '@/api/message'
 import { Loading } from 'element-ui'
 
 export default {
@@ -108,7 +141,9 @@ export default {
       windowHeight: window.innerHeight,
       keyboardHeight: 0,
       isComposing: false,
-      conversation_id: ''
+      conversation_id: '',
+      dialogVisible: false,
+      messageList: []
     }
   },
   computed: {
@@ -300,6 +335,43 @@ export default {
         id: this.conversation_id
       })
       this.$router.push('/story')
+    },
+    async getMessageList() {
+      const storyId = this.$route.params.id
+      const userNo = this.username
+      let userId = null
+      const result = await getInfo()
+      result.data.some((item) => {
+        if (item.user_no === userNo) {
+          userId = item.id
+          return true
+        }
+      })
+
+      if (userId) {
+        const today = new Date()
+        const year = today.getFullYear()
+        const month = String(today.getMonth() + 1).padStart(2, '0')
+        const day = String(today.getDate()).padStart(2, '0')
+
+        const formattedDate = `${year}${month}${day}`
+        const res = await getUser(userId)
+        this.messageList = []
+        res.data.map((item) => {
+          if (item.execute_date === parseInt(formattedDate, 10) && item.tutorial_id === parseInt(storyId, 10)) {
+            this.messageList.push(item)
+          }
+        })
+      }
+    },
+    async openRecords() {
+      this.dialogVisible = true
+      await this.getMessageList()
+    },
+    handleClose(done) {
+      this.$confirm('確認關閉？')
+        .then(_ => done())
+        .catch(_ => {})
     }
   }
 }
