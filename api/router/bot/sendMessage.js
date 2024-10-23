@@ -22,7 +22,8 @@ module.exports = async(req, res) => {
         'Content-Type': 'application/json'
       },
       data: {
-        model: 'gpt-4o-mini',
+        model: 'gpt-4o',
+        // model: 'gpt-4o-mini',
         messages: [
           {
             role: 'system',
