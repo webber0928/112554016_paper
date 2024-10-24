@@ -6,21 +6,23 @@
         v-for="item in items"
         :key="item.id"
         :span="3"
+        :xs="12"
         style="margin-top: 15px"
       >
         <div class="grid-content bg-purple">
           <el-card :body-style="{ padding: '0px' }">
             <div style="padding: 14px" @click="go(item.id)">
               <p>
-                <b>{{ item.user_no }}</b>
+                <b>{{ item.user_no }}</b><br>
+                次數: <b>{{ item.count }}</b>
               </p>
               <!-- <p>
                 群組:
                 <b>{{ item.group == "teacher" ? item.group : `${item.user_no[0]}${item.user_no[1]}` }}</b>
               </p> -->
-              <p>
+              <!-- <p>
                 次數: <b>{{ item.count }}</b>
-              </p>
+              </p> -->
               <!-- <div
                 class="bottom clearfix"
                 style="text-align: center;margin-top: 10px"
