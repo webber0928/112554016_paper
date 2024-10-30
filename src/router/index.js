@@ -127,26 +127,26 @@ export const constantRoutes = [
       {
         path: '',
         name: 'Teacher',
-        component: () => import('@/views/teacher/dashbord'),
-        meta: { title: '老師儀錶板', icon: 'form', roles: ['admin-token'] }
-      }
-    ]
-    // hidden: true
-  },
-
-  {
-    path: '/teacher/aaa',
-    component: Layout,
-    children: [
-      {
-        path: '',
-        name: 'Teacher',
         component: () => import('@/views/teacher/dashbord1'),
         meta: { title: '老師儀錶板', icon: 'form', roles: ['admin-token'] }
       }
     ]
     // hidden: true
   },
+
+  // {
+  //   path: '/teacher/aaa',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: '',
+  //       name: 'Teacher',
+  //       component: () => import('@/views/teacher/dashbord1'),
+  //       meta: { title: '老師儀錶板', icon: 'form', roles: ['admin-token'] }
+  //     }
+  //   ]
+  //   // hidden: true
+  // },
 
   {
     path: '/teacher/user/:id',
