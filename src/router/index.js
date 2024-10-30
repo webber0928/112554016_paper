@@ -114,7 +114,7 @@ export const constantRoutes = [
         path: '',
         name: 'listPrompt',
         component: () => import('@/views/prompt/list'),
-        meta: { title: '學習單 Prompt', icon: 'form', roles: ['admin-token'] }
+        meta: { title: '學習單 Prompt', icon: 'el-icon-s-claim', roles: ['admin-token'] }
       }
     ]
     // hidden: true
@@ -128,7 +128,7 @@ export const constantRoutes = [
         path: '',
         name: 'Teacher',
         component: () => import('@/views/teacher/dashbord1'),
-        meta: { title: '老師儀錶板', icon: 'form', roles: ['admin-token'] }
+        meta: { title: '老師儀錶板', icon: 'el-icon-s-data', roles: ['admin-token'] }
       }
     ]
     // hidden: true

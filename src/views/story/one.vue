@@ -256,36 +256,75 @@ export default {
       return text
     },
     async onSubmit() {
+      const regex = /^[A-Za-z0-9]*$/
       const content = this.form.prompt
       if (!content) return
-      this.historyItems.push({
-        role: 'user',
-        content: content
-      })
-      this.scrollToBottom()
-      try {
-        this.$message({
-          type: 'info',
-          message: '訊息已發送'
-        })
-        this.form.prompt = ''
-        const historyItems = [this.initData].concat(this.historyItems)
-        const result = await sendMessage({
-          messages: historyItems,
-          username: this.username,
-          storyId: this.$route.params.id,
-          conversation_id: this.conversation_id
-        })
-        const content = result.data.choices[0].message.content
-
+      if (regex.test(content)) {
+        // 如果符合規則，執行提交邏輯
+        console.log('提交的內容:', content)
         this.historyItems.push({
-          role: result.data.choices[0].message.role,
+          role: 'user',
           content: content
         })
         this.scrollToBottom()
-      } catch (error) {
-        this.$message(error)
+        try {
+          this.$message({
+            type: 'info',
+            message: '訊息已發送'
+          })
+          this.form.prompt = ''
+          const historyItems = [this.initData].concat(this.historyItems)
+          const result = await sendMessage({
+            messages: historyItems,
+            username: this.username,
+            storyId: this.$route.params.id,
+            conversation_id: this.conversation_id
+          })
+          const content = result.data.choices[0].message.content
+
+          this.historyItems.push({
+            role: result.data.choices[0].message.role,
+            content: content
+          })
+          this.scrollToBottom()
+        } catch (error) {
+          this.$message(error)
+        }
+      } else {
+        // 如果不符合，清空或處理無效輸入
+        alert('請只輸入英文和數字。')
+        // this.form.prompt = '' // 清空輸入框
       }
+
+      // if (!content) return
+      // this.historyItems.push({
+      //   role: 'user',
+      //   content: content
+      // })
+      // this.scrollToBottom()
+      // try {
+      //   this.$message({
+      //     type: 'info',
+      //     message: '訊息已發送'
+      //   })
+      //   this.form.prompt = ''
+      //   const historyItems = [this.initData].concat(this.historyItems)
+      //   const result = await sendMessage({
+      //     messages: historyItems,
+      //     username: this.username,
+      //     storyId: this.$route.params.id,
+      //     conversation_id: this.conversation_id
+      //   })
+      //   const content = result.data.choices[0].message.content
+
+      //   this.historyItems.push({
+      //     role: result.data.choices[0].message.role,
+      //     content: content
+      //   })
+      //   this.scrollToBottom()
+      // } catch (error) {
+      //   this.$message(error)
+      // }
     },
     onCancel() {
       this.$message({

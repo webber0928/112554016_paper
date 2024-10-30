@@ -131,7 +131,7 @@
               width="50"
             >
               <template slot-scope="scope">
-                {{ scope.row.type === 'assistant'? 'Bot': 'User' }}
+                <b>{{ scope.row.type === 'assistant'? 'Bot': scope.row.User.user_no }}</b>
               </template>
             </el-table-column>
             <el-table-column
