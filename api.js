@@ -56,6 +56,7 @@ app.get('/dev-api/dashboard/message/user/list', require('./api/router/message/us
 app.get('/dev-api/dashboard/message/user/:userId', require('./api/router/message/userOne'))
 app.get('/dev-api/dashboard/message/dateLine', require('./api/router/message/dateLine'))
 app.get('/dev-api/dashboard/message/list', require('./api/router/message/list'))
+app.get('/dev-api/dashboard/message/trigger', require('./api/router/message/trigger'))
 
 // 群組資訊
 app.get('/dev-api/dashboard/message/userGroup/list', require('./api/router/message/userGroupList'))

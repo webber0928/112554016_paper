@@ -68,3 +68,11 @@ export function messageList(params) {
     params
   })
 }
+
+export function messageTrigger(params) {
+  return request({
+    url: '/dashboard/message/trigger',
+    method: 'get',
+    params
+  })
+}

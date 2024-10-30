@@ -3,10 +3,8 @@
 </template>
 
 <script>
-// import echarts from 'echarts'
 import * as echarts from 'echarts'
 
-console.log(echarts)
 require('echarts/theme/macarons') // echarts theme
 import resize from './mixins/resize'
 
@@ -29,7 +27,7 @@ export default {
     },
     height: {
       type: String,
-      default: '220px'
+      default: '180px'
     },
     data62: {
       type: Array,
@@ -38,6 +36,10 @@ export default {
     data64: {
       type: Array,
       default: () => []
+    },
+    onBarClick: {
+      type: Function,
+      default: null
     }
   },
   data() {
@@ -91,9 +93,16 @@ export default {
       this.initChart() // 獲取數據後初始化圖表
     },
     initChart() {
+      if (this.chart) {
+        this.chart.off('click') // 先移除已存在的點擊監聽器
+      }
+
       this.chart = echarts.init(this.$el, 'macarons')
 
-      console.log(Object.keys(this.obj))
+      this.chart.on('click', params => {
+        this.setSelectedState(params)
+      })
+
       // 設置圖表選項
       // const option = {
       //   xAxis: {
@@ -195,7 +204,6 @@ export default {
         this.data.push(item.total)
       })
 
-      console.log(this.data)
       // 更新圖表數據
       this.chart.setOption({
         series: [
@@ -211,6 +219,10 @@ export default {
       // this.run()
       // 設置定時器以每隔3秒更新數據
       // setInterval(this.run, animationDuration)
+    },
+    setSelectedState(params) {
+      const result = `${params.seriesName} + ${params.name}`.replace(/\D/g, '')
+      this.onBarClick(result)
     }
   }
 }

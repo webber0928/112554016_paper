@@ -126,8 +126,8 @@ export const constantRoutes = [
     children: [
       {
         path: '',
-        name: 'Teacher',
-        component: () => import('@/views/teacher/dashbord1'),
+        name: 'Teacher Dashboard',
+        component: () => import('@/views/teacher/dashboard'),
         meta: { title: '老師儀錶板', icon: 'el-icon-s-data', roles: ['admin-token'] }
       }
     ]

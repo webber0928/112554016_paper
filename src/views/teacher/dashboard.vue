@@ -15,7 +15,7 @@
                 >
                   <router-link :to="`?date=${String(item.execute_date).match(/(\d{4})(\d{2})(\d{2})/).slice(1).join('-')}`">
                     <p>
-                      第{{ index + 1 }}次實驗<br>
+                      第{{ index + 1 }}次使用<br>
                       共有{{ item.total_records }}筆紀錄
                     </p>
                   </router-link>
@@ -70,6 +70,7 @@
               :data64="group64"
               :item="item"
               :class-name="item.group"
+              :on-bar-click="handleBarClick"
             />
           </el-col>
         </el-row>
@@ -161,7 +162,7 @@
 import Chart1 from '@/components/Chart1.vue'
 import { mapGetters } from 'vuex'
 import { Loading } from 'element-ui'
-import { getUserGroup, getInfo, dateLine, messageList } from '@/api/message'
+import { getUserGroup, getInfo, dateLine, messageList, messageTrigger } from '@/api/message'
 const now = new Date()
 
 export default {
@@ -252,6 +253,10 @@ export default {
     },
     rowClassName({ row }) {
       return row.isBot ? '' : 'user-row'
+    },
+    handleBarClick(user_no) {
+      console.log('Bar clicked:', user_no)
+      this.selectUserFunc(user_no)
     }
   }
 }

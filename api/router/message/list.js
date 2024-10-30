@@ -23,11 +23,11 @@ module.exports = async(req, res) => {
           where: {
             group: [62, 64]
           },
-          attributes: ['user_no', 'group'] // 如果不需要從 User 模型中返回任何字段，可以留空，這樣會提高效能
+          attributes: ['id', 'user_no', 'group'] // 如果不需要從 User 模型中返回任何字段，可以留空，這樣會提高效能
         },
         {
           model: Story,
-          attributes: ['ranking', 'title'] // 如果不需要從 User 模型中返回任何字段，可以留空，這樣會提高效能
+          attributes: ['id', 'ranking', 'title'] // 如果不需要從 User 模型中返回任何字段，可以留空，這樣會提高效能
         }
       ],
       order: [['execute_date', 'ASC']]
