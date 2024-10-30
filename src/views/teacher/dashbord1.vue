@@ -85,12 +85,12 @@
                 style="margin-right: 15px;margin-bottom: 15px;font-family:monospace !important;cursor: pointer;"
                 @click="selectUserFunc(item.user_no)"
               >
-                {{ item.user_no }}({{ item.count - 2 }})
+                {{ item.user_no }}
               </el-tag>
             </template>
           </div>
-          <div>
-            <hr>
+          <hr v-if="group64.length && group62.length" style="margin-top: -7px;">
+          <div v-if="group64.length">
             <template v-for="item in group64">
               <el-tag
                 v-if="item.count"
@@ -99,13 +99,12 @@
                 style="margin-right: 15px;margin-bottom: 15px;font-family:monospace !important;cursor: pointer;"
                 @click="selectUserFunc(item.user_no)"
               >
-                {{ item.user_no }}({{ item.count - 2 }})
+                {{ item.user_no }}
               </el-tag>
             </template>
           </div>
           <el-table
             :data="selectUser"
-            height="400"
             border
             style="width: 100%"
             :row-class-name="rowClassName"
@@ -227,6 +226,7 @@ export default {
 
         this.group62 = []
         this.group64 = []
+        this.selectUser = []
         this.allInfo = getAllInfo.data.map(item => {
           if (item.user_no.indexOf('62') > -1) {
             this.group62.push(item)

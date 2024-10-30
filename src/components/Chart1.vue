@@ -14,7 +14,7 @@ import resize from './mixins/resize'
 import { getUserGroupOne } from '@/api/message'
 import { Loading } from 'element-ui'
 
-const animationDuration = 6000
+// const animationDuration = 6000
 
 export default {
   mixins: [resize],
@@ -45,15 +45,20 @@ export default {
       data: [],
       chart: null,
       obj: {},
-      // vo_value: null,
-      // vo: null,
       labelList: []
+    }
+  },
+  watch: {
+    data62: {
+      handler(newVal) { this.initData() }
+    },
+    data64: {
+      handler(newVal) { this.initData() }
     }
   },
   mounted() {
     this.$nextTick(() => {
       this.initData()
-      // this.initChart()
     })
   },
   beforeDestroy() {
@@ -64,41 +69,17 @@ export default {
   },
   methods: {
     async initData() {
-      // 初始化隨機數據
-      // for (let i = 0; i < 5; ++i) {
-      //   this.data.push(Math.round(Math.random() * 200))
-      // }
-      // this.threadId = this.$route.params.threadId // 從路由參數獲取 threadId
-      // this.dashboardBarChart()
       const loadingInstance = Loading.service({ fullscreen: true })
 
-      console.log('L75', this.className)
       let result = []
-      if (this.className === '62') {
-        result = this.data62
-      }
-      if (this.className === '64') {
-        result = this.data64
-      }
-      // const result = await getUserGroupOne(this.className)
+      if (this.className === '62') result = this.data62
+      if (this.className === '64') result = this.data64
       this.labelList = []
       this.data = []
       result.forEach((item) => {
         this.labelList.push(item.user_no.slice(-2))
         this.data.push(item.count)
       })
-      console.log(result)
-      console.log('L85', this.data)
-      console.log('L86', this.labelList)
-      // this.obj = result.data.reduce((acc, item) => {
-      //   if (item.group === 'teacher') return acc
-      //   if (!acc[item.group]) {
-      //     acc[item.group] = []
-      //   }
-      //   acc[item.group].push(item)
-      //   return acc
-      // }, {})
-      // console.log(groupedData)
       this.initChart()
       loadingInstance.close()
     },
@@ -230,20 +211,6 @@ export default {
       // this.run()
       // 設置定時器以每隔3秒更新數據
       // setInterval(this.run, animationDuration)
-    }
-  },
-  watch: {
-    data62: {
-      handler(newVal) {
-        this.initData()
-      },
-      // immediate: true // 在組件初始化時也執行一次
-    },
-    data64: {
-      handler(newVal) {
-        this.initData()
-      },
-      // immediate: true // 在組件初始化時也執行一次
     }
   }
 }
