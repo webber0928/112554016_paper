@@ -256,7 +256,7 @@ export default {
       return text
     },
     async onSubmit() {
-      const regex = /^[A-Za-z0-9]*$/
+      const regex = /^[A-Za-z0-9,.!?;:'"()&\- ]*$/
       const content = this.form.prompt
       if (!content) return
       if (regex.test(content)) {
@@ -292,7 +292,7 @@ export default {
         }
       } else {
         // 如果不符合，清空或處理無效輸入
-        alert('請只輸入英文和數字。')
+        alert('請只輸入英文哦。')
         // this.form.prompt = '' // 清空輸入框
       }
 
