@@ -9,7 +9,6 @@ module.exports = async(req, res) => {
       where.execute_date = date.match(/\d+/g).join('')
     }
 
-    console.log('L12', where)
     const message = await Message.findAll({
       where: {
         ...where,
