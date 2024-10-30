@@ -4,9 +4,14 @@ const { Message, User } = require('../../models')
 
 module.exports = async(req, res) => {
   try {
+    const { date = null } = req.query
+    const where = {}
+    if (date) {
+      where.execute_date = date.match(/\d+/g).join('')
+    }
     const Sequelize = require('sequelize')
     const message = await Message.findAll({
-      where: {},
+      where: where,
       attributes: [
         'user',
         [Sequelize.fn('COUNT', Sequelize.col('*')), 'count']

@@ -54,7 +54,8 @@ app.get('/dev-api/prompt', require('./api/router/prompt/one'))
 // 聊天內容
 app.get('/dev-api/dashboard/message/user/list', require('./api/router/message/userList'))
 app.get('/dev-api/dashboard/message/user/:userId', require('./api/router/message/userOne'))
-app.get('/dev-api/dashboard/message/dateList', require('./api/router/message/dateList'))
+app.get('/dev-api/dashboard/message/dateLine', require('./api/router/message/dateLine'))
+app.get('/dev-api/dashboard/message/list', require('./api/router/message/list'))
 
 // 群組資訊
 app.get('/dev-api/dashboard/message/userGroup/list', require('./api/router/message/userGroupList'))

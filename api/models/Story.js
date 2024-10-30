@@ -41,5 +41,9 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: true
   })
 
+  Story.associate = (models) => {
+    Story.hasMany(models.Message, { foreignKey: 'story_id' })
+  }
+
   return Story
 }

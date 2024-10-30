@@ -1,4 +1,4 @@
-const { Message } = require('../../models')
+const { Message, User } = require('../../models')
 
 module.exports = async(req, res) => {
   try {
@@ -16,8 +16,16 @@ module.exports = async(req, res) => {
           [Sequelize.Op.gte]: '20240901'
         }
       },
+      include: [
+        {
+          model: User,
+          where: {
+            group: [62, 64]
+          },
+          attributes: [] // 如果不需要從 User 模型中返回任何字段，可以留空，這樣會提高效能
+        }
+      ],
       group: ['execute_date'],
-      having: Sequelize.where(Sequelize.fn('COUNT', Sequelize.col('*')), '>=', 50),
       order: [['execute_date', 'ASC']]
     })
 

@@ -1,9 +1,10 @@
 import request from '@/utils/request'
 
-export function getInfo() {
+export function getInfo(params) {
   return request({
     url: '/dashboard/message/user/list',
-    method: 'get'
+    method: 'get',
+    params
   })
 }
 
@@ -49,5 +50,21 @@ export function leaveMessage(params) {
     url: '/gpt-endMessage',
     method: 'post',
     data: params
+  })
+}
+
+export function dateLine(params) {
+  return request({
+    url: '/dashboard/message/dateLine',
+    method: 'get',
+    data: params
+  })
+}
+
+export function messageList(params) {
+  return request({
+    url: '/dashboard/message/list',
+    method: 'get',
+    params
   })
 }

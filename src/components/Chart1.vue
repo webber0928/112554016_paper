@@ -30,6 +30,14 @@ export default {
     height: {
       type: String,
       default: '220px'
+    },
+    data62: {
+      type: Array,
+      default: () => []
+    },
+    data64: {
+      type: Array,
+      default: () => []
     }
   },
   data() {
@@ -39,7 +47,7 @@ export default {
       obj: {},
       // vo_value: null,
       // vo: null,
-      labelList: [],
+      labelList: []
     }
   },
   mounted() {
@@ -64,13 +72,24 @@ export default {
       // this.dashboardBarChart()
       const loadingInstance = Loading.service({ fullscreen: true })
 
-      const result = await getUserGroupOne(this.className)
-      result.data.forEach((item) => {
+      console.log('L75', this.className)
+      let result = []
+      if (this.className === '62') {
+        result = this.data62
+      }
+      if (this.className === '64') {
+        result = this.data64
+      }
+      // const result = await getUserGroupOne(this.className)
+      this.labelList = []
+      this.data = []
+      result.forEach((item) => {
         this.labelList.push(item.user_no.slice(-2))
-        this.data.push(item.total)
+        this.data.push(item.count)
       })
       console.log(result)
-      console.log(this.data)
+      console.log('L85', this.data)
+      console.log('L86', this.labelList)
       // this.obj = result.data.reduce((acc, item) => {
       //   if (item.group === 'teacher') return acc
       //   if (!acc[item.group]) {
@@ -134,21 +153,21 @@ export default {
         tooltip: {
           trigger: 'axis',
           axisPointer: {
-            type: 'shadow',
-          },
+            type: 'shadow'
+          }
         },
         grid: {
           left: '3%',
           right: '4%',
           bottom: '3%',
-          containLabel: true,
+          containLabel: true
         },
         xAxis: [
           {
             type: 'category',
             data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
             axisTick: {
-              alignWithLabel: true,
+              alignWithLabel: true
             }
           }
         ],
@@ -162,7 +181,7 @@ export default {
             name: 'Direct',
             type: 'bar',
             barWidth: '60%',
-            data: [10, 52, 200, 334, 390, 330, 220],
+            data: [10, 52, 200, 334, 390, 330, 220]
           }
         ]
       }
@@ -201,16 +220,30 @@ export default {
         series: [
           {
             type: 'bar',
-            data: this.data,
-          },
-        ],
+            data: this.data
+          }
+        ]
       })
     },
     startDataUpdate() {
       // 初始執行
-      this.run()
+      // this.run()
       // 設置定時器以每隔3秒更新數據
-      setInterval(this.run, animationDuration)
+      // setInterval(this.run, animationDuration)
+    }
+  },
+  watch: {
+    data62: {
+      handler(newVal) {
+        this.initData()
+      },
+      // immediate: true // 在組件初始化時也執行一次
+    },
+    data64: {
+      handler(newVal) {
+        this.initData()
+      },
+      // immediate: true // 在組件初始化時也執行一次
     }
   }
 }
