@@ -71,6 +71,21 @@
               :item="item"
               :class-name="item.group"
               :on-bar-click="handleBarClick"
+              :color="false"
+            />
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col v-for="item in items" :key="item.id" :span="24/items.length">
+            星星數量
+
+            <Chart1
+              :data62="group62start"
+              :data64="group64start"
+              :item="item"
+              :class-name="item.group"
+              :on-bar-click="handleBarClick"
+              :color="true"
             />
           </el-col>
         </el-row>
@@ -103,6 +118,29 @@
                 {{ item.user_no }}
               </el-tag>
             </template>
+          </div>
+          <div v-if="selectUser.length">
+            總共花費：{{ Math.floor((new Date(selectUser[selectUser.length-1].createdAt) - new Date(selectUser[0].createdAt)) / (1000 * 60)) }}分鐘<br>
+            獲得⭐: {{
+              selectUser.reduce((result, item) => {
+                if (item.isBot) {
+                  if (item.message.content.indexOf('⭐') > -1) {
+                    result.push(item.message.content)
+                  }
+                }
+                return result
+              }, []).length
+            }}<br>
+            例外：{{
+              selectUser.reduce((result, item) => {
+                if (item.isBot) {
+                  if (item.message.content.indexOf('(例外)') > -1) {
+                    result.push(item.message.content)
+                  }
+                }
+                return result
+              }, []).length
+            }}<br>
           </div>
           <el-table
             :data="selectUser"
@@ -187,7 +225,9 @@ export default {
       messageListResult: [],
       selectUser: [],
       group62: [],
-      group64: []
+      group64: [],
+      group62start: [],
+      group64start: []
     }
   },
   computed: {
@@ -227,13 +267,28 @@ export default {
 
         this.group62 = []
         this.group64 = []
+        this.group62start = []
+        this.group64start = []
         this.selectUser = []
         this.allInfo = getAllInfo.data.map(item => {
+          // console.log('L267', item)
+          const userMessageList = this.messageListResult.filter((im) => item.user_no === im.User.user_no)
+          console.log('L269', userMessageList)
+          const startItem = JSON.parse(JSON.stringify(item))
+          startItem.count = userMessageList.reduce((result, it) => {
+            if (it.isBot && it.message.content.indexOf('⭐') > -1) {
+              result.push(it.message.content)
+            }
+            return result
+          }, []).length
+
           if (item.user_no.indexOf('62') > -1) {
             this.group62.push(item)
+            this.group62start.push(startItem)
           }
           if (item.user_no.indexOf('64') > -1) {
             this.group64.push(item)
+            this.group64start.push(startItem)
           }
           return item
         })

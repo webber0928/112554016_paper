@@ -17,6 +17,10 @@ import { Loading } from 'element-ui'
 export default {
   mixins: [resize],
   props: {
+    color: {
+      type: Boolean,
+      default: false
+    },
     className: {
       type: String,
       default: 'chart'
@@ -139,6 +143,7 @@ export default {
       //   animationEasingUpdate: 'linear'
       // }
 
+      console.log('L146', this.color)
       const option = {
         tooltip: {
           trigger: 'axis',
@@ -171,7 +176,10 @@ export default {
             name: 'Direct',
             type: 'bar',
             barWidth: '60%',
-            data: [10, 52, 200, 334, 390, 330, 220]
+            data: [10, 52, 200, 334, 390, 330, 220],
+            itemStyle: {
+              color: this.color ? '#f6a512' : '#2ec6c9' // 替換為你想要的顏色代碼
+            }
           }
         ]
       }
