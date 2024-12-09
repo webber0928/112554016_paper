@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
     <el-row type="flex" class="row-bg">
-      <el-col :span="4">
+      <el-col :span="4" :xs="24">
         <div class="grid-content bg-purple">
           <div class="time-line" style="">
             <div class="block">
@@ -25,7 +25,7 @@
           </div>
         </div>
       </el-col>
-      <el-col :span="19">
+      <el-col :span="19" :xs="24">
         <div class="dashboard-text">
           <!-- <el-form ref="form" :model="form">
             <el-form-item label="">
@@ -324,6 +324,11 @@ export default {
   table.el-table__body {
     .el-table__row.user-row {
       background: #fffcdd;
+    }
+  }
+  @media (max-width: 768px) {
+    .row-bg {
+      display: block; /* 切換為 block 布局 */
     }
   }
 }
