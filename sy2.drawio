@@ -1,9 +1,24 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" version="26.2.8">
   <diagram name="第 1 页" id="AMts9If4EELW18Fdd8Dz">
-    <mxGraphModel>
+    <mxGraphModel dx="788" dy="463" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="u8WMea-Q0eavokkaIIrd-1" value="Client" style="swimlane;whiteSpace=wrap;html=1;fillColor=light-dark(#F9F7F4,#EDEDED);startSize=23;" vertex="1" parent="1">
+          <mxGeometry x="70" y="120" width="220" height="223.4" as="geometry" />
+        </mxCell>
+        <mxCell id="u8WMea-Q0eavokkaIIrd-4" value="" style="shape=image;imageAspect=0;aspect=fixed;verticalLabelPosition=bottom;verticalAlign=top;clipPath=inset(1% 1% 9.67% 2%);image=https://sdmntprcentralus.oaiusercontent.com/files/00000000-de14-61f5-a2ea-6d7178b2c9cb/raw?se=2025-05-30T18%3A56%3A12Z&amp;sp=r&amp;sv=2024-08-04&amp;sr=b&amp;scid=037aa0e8-e2f4-5a5c-b1bc-282177b0d9ed&amp;skoid=732f244e-db13-47c3-bcc7-7ee02a9397bc&amp;sktid=a48cca56-e6da-484e-a814-9c849652bcb3&amp;skt=2025-05-29T23%3A50%3A33Z&amp;ske=2025-05-30T23%3A50%3A33Z&amp;sks=b&amp;skv=2024-08-04&amp;sig=GMioWg5l4EKV9RPJO0Tr95xeB2NY/5Gf6u0VQmCoTic%3D;" vertex="1" parent="u8WMea-Q0eavokkaIIrd-1">
+          <mxGeometry x="23.130000000000003" y="30" width="173.73" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="u8WMea-Q0eavokkaIIrd-5" value="Browser" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="u8WMea-Q0eavokkaIIrd-1">
+          <mxGeometry x="75" y="193.39999999999998" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="u8WMea-Q0eavokkaIIrd-2" value="Server" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="120" width="200" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="u8WMea-Q0eavokkaIIrd-3" value="Data" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="627" y="120" width="200" height="200" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
