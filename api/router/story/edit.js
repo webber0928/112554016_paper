@@ -2,7 +2,7 @@
 const { Story } = require('../../models')
 
 module.exports = async(req, res) => {
-  const { title, content, ranking, words = [], prompt_part } = req.body
+  const { title, content, ranking, words = [], prompt_part, isVisible } = req.body
   try {
     const item = await Story.findOne({
       where: {
