@@ -26,6 +26,10 @@ module.exports = async(req, res) => {
       item.set('prompt_part', prompt_part)
     }
 
+    if ((isVisible || isVisible === false) && item.isVisible !== isVisible) {
+      item.set('isVisible', isVisible)
+    }
+
     if (ranking) item.set('ranking', ranking)
     await item.save()
 

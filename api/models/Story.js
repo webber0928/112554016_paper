@@ -32,6 +32,11 @@ module.exports = (sequelize, DataTypes) => {
         return JSON.parse(this.getDataValue('words'))
       }
     },
+    isVisible: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true // 預設值為 true
+    },
     deleted_at: {
       type: DataTypes.BIGINT,
       allowNull: true

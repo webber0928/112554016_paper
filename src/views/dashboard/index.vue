@@ -10,6 +10,16 @@
         <div class="grid-content bg-purple">
           <el-card :body-style="{ padding: '0px' }">
             <div style="padding: 14px;">
+              <el-switch
+                v-if="token==='admin-token'"
+                v-model="item.isVisible"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+                active-text="開啟"
+                inactive-text="隱藏"
+                style="float: right"
+                @change="switchStory(item.id, item.isVisible)"
+              />
               <span>單元: <b>{{ item.ranking }}</b></span>
               <p>文章標題: <b>{{ item.title }}</b></p>
               單字卡:
@@ -31,7 +41,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { Loading } from 'element-ui'
-import { getList } from '@/api/story'
+import { getList, updateOne } from '@/api/story'
 
 export default {
   name: 'Dashboard',
@@ -55,7 +65,10 @@ export default {
         const loadingInstance = Loading.service({ fullscreen: true })
         const result = await getList()
         loadingInstance.close()
-        this.items = result.data.items
+        // this.items = result.data.items
+        this.items = result.data.items.filter((item) => {
+          return item.isVisible || this.token === 'admin-token'
+        })
       } catch (error) {
         this.$message(error)
       }
@@ -76,6 +89,15 @@ export default {
       } catch (error) {
         this.$message(error)
       }
+    },
+    async switchStory(id, isVisible) {
+      this.items.map((item) => {
+        if (item.id === id) {
+          item.isVisible = !!isVisible
+        }
+        return item
+      })
+      await updateOne(id, { isVisible: !!isVisible })
     }
   }
 }
